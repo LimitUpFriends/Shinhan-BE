@@ -30,6 +30,8 @@ public class MemberEntity {
 
     private String name;
 
+    private String email;
+
     private String nickname;
 
     @Enumerated(EnumType.STRING)
