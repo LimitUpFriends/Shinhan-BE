@@ -3,7 +3,6 @@ package com.LimitUpFriends.shinhan.repository;
 import java.util.List;
 
 import com.LimitUpFriends.shinhan.domain.entity.MemberEntity;
-import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 
