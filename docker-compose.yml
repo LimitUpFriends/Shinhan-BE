@@ -2,44 +2,26 @@ version: '3.8'
 
 services:
   db:
-    image: mysql:8.0
+    image: mariadb:10.11
+    container_name: mariadb_shinhan
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: 1234
-      MYSQL_DATABASE: parking
+      MYSQL_DATABASE: shinhan
       MYSQL_USER: user
       MYSQL_PASSWORD: 1234
     ports:
-      - "3306:3306"
+      - "3307:3306"
     volumes:
-      - mysql-data:/var/lib/mysql
-    networks:
-      - backend
+      - mariadb-data:/var/lib/mysql
 
   redis:
     image: redis
+    container_name: redis_shinhan
+    platform: linux/amd64
     restart: always
     ports:
-      - "6379:6379"
-    networks:
-      - backend
-
-  app:
-    image: eclipse-temurin:21-jdk  # 그냥 java만 돌리는 컨테이너
-    command: ["java", "-jar", "/app/app.jar"]
-    volumes:
-      - ./build/libs/shinhan-0.0.1-SNAPSHOT.jar:/app/app.jar
-    depends_on:
-      - db
-      - redis
-    ports:
-      - "8080:8080"
-    networks:
-      - backend
+      - "6380:6379"
 
 volumes:
-  mysql-data:
-
-networks:
-  backend:
-    driver: bridge
+  mariadb-data:
