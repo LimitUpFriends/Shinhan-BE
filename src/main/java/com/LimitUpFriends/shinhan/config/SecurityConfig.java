@@ -64,8 +64,8 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/my/**").hasAnyRole("ADMIN", "USER") // /api/v1/my/**만 허용
                         .anyRequest().authenticated()
                 )
-                .addFilterBefore(apiKeyAuthFilter,
-                        UsernamePasswordAuthenticationFilter.class) // API Key 필터 추가
+//                .addFilterBefore(apiKeyAuthFilter,
+//                        UsernamePasswordAuthenticationFilter.class) // API Key 필터 추가
 
                 .exceptionHandling(exception -> exception
                         .authenticationEntryPoint((request, response, authException) -> {
@@ -89,15 +89,18 @@ public class SecurityConfig {
                                 .userService(customOAuth2UserService)));
 
         // CSRF(Cross Site Request Forgery: 사이트 간 요청 위조)
-        if (!CSRF_REQUIRED_PROFILES.contains(activeProfile)) {
-            http.csrf(auth -> auth.disable());
-        } else {
-            http.csrf(csrf -> csrf
-                    .ignoringRequestMatchers("/api/v1/auth/custom-session-login")
-                    .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-            );
-        }
+//        if (!CSRF_REQUIRED_PROFILES.contains(activeProfile)) {
+//            http.csrf(auth -> auth.disable());
+//        } else {
+//            http.csrf(csrf -> csrf
+//                    .ignoringRequestMatchers("/api/v1/auth/custom-session-login")
+//                    .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+//            );
+//        }
         // http.csrf(auth -> auth.disable());
+        // CSRF 설정
+        http.csrf(csrf -> csrf.disable());
+
 
         http
                 .httpBasic((basic) -> basic.disable());
@@ -130,13 +133,13 @@ public class SecurityConfig {
     /**
      * 쿠키를 크로스 사이트 요청에서도 사용할 수 있도록 SameSite=None; Secure 설정 추가
      */
-    @Bean
-    public CookieSerializer cookieSerializer() {
-        DefaultCookieSerializer serializer = new DefaultCookieSerializer();
-        serializer.setCookieName("SESSION"); // 세션 쿠키 이름
-        serializer.setCookiePath("/");
-        serializer.setUseSecureCookie(true); // HTTPS에서만 쿠키 전송 (http에서는 쿠키 전송이 안되므로 개발 환경에서는 false로 설정)
-        serializer.setSameSite("None"); // 크로스 사이트 요청에서 쿠키 허용
-        return serializer;
-    }
+//    @Bean
+//    public CookieSerializer cookieSerializer() {
+//        DefaultCookieSerializer serializer = new DefaultCookieSerializer();
+//        serializer.setCookieName("SESSION"); // 세션 쿠키 이름
+//        serializer.setCookiePath("/");
+//        serializer.setUseSecureCookie(true); // HTTPS에서만 쿠키 전송 (http에서는 쿠키 전송이 안되므로 개발 환경에서는 false로 설정)
+//        serializer.setSameSite("None"); // 크로스 사이트 요청에서 쿠키 허용
+//        return serializer;
+//    }
 }
