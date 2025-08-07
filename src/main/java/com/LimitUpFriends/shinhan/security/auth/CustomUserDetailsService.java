@@ -1,4 +1,4 @@
-package com.LimitUpFriends.shinhan.security;
+package com.LimitUpFriends.shinhan.security.auth;
 
 /**
  * Spring Security의 "인증" 과정을 담당 - 사용자 정보를 데이터베이스에서 조회하고, 조회된 사용자 정보를 Spring Security가 처리할 수 있는 형태로

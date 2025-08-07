@@ -1,6 +1,10 @@
 package com.LimitUpFriends.shinhan.controller;
 
-import com.LimitUpFriends.shinhan.security.SecurityUtil;
+/**
+ * 현재 인증된 계정의 정보를 불러온다.
+ */
+
+import com.LimitUpFriends.shinhan.util.SecurityUtil;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,11 +23,10 @@ public class SessionController {
         // 현재 인증 정보 가져오기
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        // 🔽 SecurityUtil 사용한 정보 출력
+        // SecurityUtil 사용한 정보 출력
         System.out.println(" 현재 사용자 ID: " + SecurityUtil.getCurrentUserId());
         System.out.println(" 현재 사용자 이름: " + SecurityUtil.getCurrentUsername());
         System.out.println(" 로그인 플랫폼: " + (SecurityUtil.getCurrentUserLoginPlatform() ? "일반 로그인" : "소셜 로그인"));
-
 
         // 응답 데이터 생성
         Map<String, Object> response = new HashMap<>();

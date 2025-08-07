@@ -1,7 +1,7 @@
 package com.LimitUpFriends.shinhan.util;
 
-import com.LimitUpFriends.shinhan.dto.CustomOAuth2User;
-import com.LimitUpFriends.shinhan.security.CustomUserDetails;
+import com.LimitUpFriends.shinhan.security.auth.CustomOAuth2User;
+import com.LimitUpFriends.shinhan.security.auth.CustomUserDetails;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 

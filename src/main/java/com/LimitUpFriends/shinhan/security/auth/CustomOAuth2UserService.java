@@ -1,14 +1,17 @@
-package com.LimitUpFriends.shinhan.security;
+package com.LimitUpFriends.shinhan.security.auth;
 
 /**
- * OAuth2 핵심 로직 카카오, 구글, 네이버 로그인 및 회원가입
+ * OAuth2 로그인 시 사용자 정보를 받아 회원가입 or 기존 사용자 확인 후 CustomOAuth2User로 반환
  */
 
 
 import com.LimitUpFriends.shinhan.domain.entity.MemberEntity;
 import com.LimitUpFriends.shinhan.domain.enums.Platform;
 import com.LimitUpFriends.shinhan.domain.enums.Role;
-import com.LimitUpFriends.shinhan.dto.*;
+import com.LimitUpFriends.shinhan.dto.auth.GoogleResponse;
+import com.LimitUpFriends.shinhan.dto.auth.KakaoResponse;
+import com.LimitUpFriends.shinhan.dto.auth.NaverResponse;
+import com.LimitUpFriends.shinhan.dto.auth.OAuth2Response;
 import com.LimitUpFriends.shinhan.repository.MemberRepository;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;

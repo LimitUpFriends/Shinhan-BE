@@ -1,4 +1,4 @@
-package com.LimitUpFriends.shinhan.dto;
+package com.LimitUpFriends.shinhan.dto.auth;
 
 import java.io.Serializable;
 import java.util.Map;

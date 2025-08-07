@@ -1,4 +1,8 @@
-package com.LimitUpFriends.shinhan.dto;
+package com.LimitUpFriends.shinhan.dto.auth;
+
+/**
+ * 소셜 로그인 응답의 공통 인터페이스
+ */
 
 public interface OAuth2Response {
 

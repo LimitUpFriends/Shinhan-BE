@@ -1,14 +1,16 @@
-package com.LimitUpFriends.shinhan.dto;
+package com.LimitUpFriends.shinhan.security.auth;
 
+/**
+ * OAuth2User를 구현하여 로그인한 사용자의 정보를 담는 클래스. 세션에 저장될 사용자 정보 포맷
+ */
 
+import com.LimitUpFriends.shinhan.dto.auth.OAuth2Response;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 
 public class CustomOAuth2User implements OAuth2User, Serializable {

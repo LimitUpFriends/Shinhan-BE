@@ -1,4 +1,4 @@
-package com.LimitUpFriends.shinhan.security;
+package com.LimitUpFriends.shinhan.security.handler;
 
 /**
  * 일반 로그인 성공 핸들러
