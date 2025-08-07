@@ -1,7 +1,7 @@
 package com.LimitUpFriends.shinhan.controller;
 
 /**
- * 로그아웃 요청 처리 컨트롤러
+ * 로그아웃 처리
  */
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,12 +19,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class LogoutController {
 
     @GetMapping("/logout")
-    public ResponseEntity<String>  logout(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public ResponseEntity<String> logout(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if(authentication != null) {
-            new SecurityContextLogoutHandler().logout(request, response, authentication);
+        Authentication authentication= SecurityContextHolder.getContext().getAuthentication();
+        if(authentication!=null) {
+            new SecurityContextLogoutHandler().logout(request,response,authentication);
         }
-        return ResponseEntity.ok("logout succcessful");
+
+        return ResponseEntity.ok("Logout succcessful");
     }
 }
