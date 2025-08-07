@@ -9,17 +9,14 @@ import com.LimitUpFriends.shinhan.security.CustomOAuth2LoginSuccessHandler;
 import com.LimitUpFriends.shinhan.security.CustomOAuth2UserService;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.Environment;
+
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
@@ -28,20 +25,14 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableWebSecurity
 public class SecurityConfig {
 
+    public SecurityConfig() {}
 
-
-    private static final Set<String> CSRF_REQUIRED_PROFILES = Set.of("prod", "performanceTest");
-
-    public SecurityConfig() {
-
-    }
 
     /**
      * 비밀번호 암호화
      */
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
-
         return new BCryptPasswordEncoder();
     }
 
@@ -50,22 +41,20 @@ public class SecurityConfig {
      */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, CustomOAuth2UserService customOAuth2UserService) throws Exception {
-        // 접근 설정
+        /**
+         * 접근 설정
+         */
         http
                 .cors(cors -> cors.configurationSource(corsConfigurationSource())) // CORS 활성화
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers(
-                                "/"
+                                "/",
+                                "/**" // 모든 경로에 대해 허용해두었습니다.
                         ).permitAll()
-                        .requestMatchers("/api/v1/", "/api/v1/auth/login/**", "/api/v1/auth/join", "/confirm",
-                                "/swagger-ui/**", "/v3/api-docs/**", "api/v1/auth/check-authId",
-                                "api/v1/sync/inout").permitAll()
-                        .requestMatchers("/api/v1/admin").hasRole("ADMIN")                  // 해당 role만 접근 가능
-                        .requestMatchers("/api/v1/my/**").hasAnyRole("ADMIN", "USER") // /api/v1/my/**만 허용
+                        .requestMatchers("/api/v1/관리자만접근해야하는").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
-//                .addFilterBefore(apiKeyAuthFilter,
-//                        UsernamePasswordAuthenticationFilter.class) // API Key 필터 추가
+
 
                 .exceptionHandling(exception -> exception
                         .authenticationEntryPoint((request, response, authException) -> {
@@ -74,36 +63,29 @@ public class SecurityConfig {
                         })
                 );
 
+        /**
+         * 로그인 처리 경로 설정
+         */
         http
                 .formLogin((formLogin) -> formLogin
-                        .loginProcessingUrl("/api/v1/auth/login") // 로그인 처리 경로
-                        .successHandler(new CustomFormLoginSuccessHandler()) // 커스텀 성공 핸들러 등록(json 반환)
-                        .permitAll() // 로그인 페이지 접근 허용
+                        .loginProcessingUrl("/api/v1/auth/login") // 일반 로그인 처리 경로
+                        .successHandler(new CustomFormLoginSuccessHandler()) // 일반 로그인 성공 시
+                        .permitAll() // 일반 로그인 페이지 접근 허용
+
                 )
 
                 .oauth2Login((oauth2) -> oauth2
                         .loginPage("/login")
                         //.defaultSuccessUrl("/api/v1/session/info", true) // 소셜 로그인 성공 후 이동 경로
-                        .successHandler(new CustomOAuth2LoginSuccessHandler()) // OAuth2 성공 핸들러 등록 (json 반환을 위해)
+                        .successHandler(new CustomOAuth2LoginSuccessHandler()) // OAuth2 성공 시
                         .userInfoEndpoint((userInfoEndpointConfig) -> userInfoEndpointConfig
                                 .userService(customOAuth2UserService)));
 
-        // CSRF(Cross Site Request Forgery: 사이트 간 요청 위조)
-//        if (!CSRF_REQUIRED_PROFILES.contains(activeProfile)) {
-//            http.csrf(auth -> auth.disable());
-//        } else {
-//            http.csrf(csrf -> csrf
-//                    .ignoringRequestMatchers("/api/v1/auth/custom-session-login")
-//                    .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-//            );
-//        }
-        // http.csrf(auth -> auth.disable());
         // CSRF 설정
-        http.csrf(csrf -> csrf.disable());
+        http.csrf(csrf -> csrf.disable()); // 꺼두겠습니다.
 
-
-        http
-                .httpBasic((basic) -> basic.disable());
+        // HTTP Basic 인증 설정
+        http.httpBasic((basic) -> basic.disable()); // 꺼두겠습니다.
 
 
         return http.build();
@@ -114,32 +96,34 @@ public class SecurityConfig {
      */
     @Bean
     public UrlBasedCorsConfigurationSource corsConfigurationSource() {
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        CorsConfiguration config = new CorsConfiguration();
+        UrlBasedCorsConfigurationSource source= new UrlBasedCorsConfigurationSource();
+        CorsConfiguration config= new CorsConfiguration();
+
 
         config.setAllowCredentials(true);
         config.setAllowedOriginPatterns(List.of( // 프론트엔드 도메인 허용
                 "http://localhost:3000",
-                "https://honorsparking-web.vercel.app"
+                "https://배포된 프론트 도메인"
         ));
-        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS")); // 허용할 HTTP 메서드 설정
-        config.setAllowedHeaders(List.of("*")); // 모든 요청 헤더 허용
-        config.setExposedHeaders(List.of("Authorization", "Set-Cookie", "X-API-KEY"));
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS")); // 허용할 HTTP method 설정
+        config.setAllowedHeaders(List.of("*")); // 요청에 포함될 수 있는 모든 헤더를 허용
+        config.setExposedHeaders(List.of("Authorization", "Set-Cookie", "X-API-KEY")); // 클라이언트(브라우저)에서 응답 헤더 중 해당 헤더들을 읽을 수 있도록 허용
 
-        source.registerCorsConfiguration("/**", config);
+        source.registerCorsConfiguration("/**", config); // 모든 경로에 대해 위의 CORS 설정 적용
+
         return source;
     }
 
     /**
-     * 쿠키를 크로스 사이트 요청에서도 사용할 수 있도록 SameSite=None; Secure 설정 추가
+     * Cookie를 크로스 사이트 요청에서도 사용할 수 있도록 SameSite=None; Secure 설정 추가
      */
 //    @Bean
 //    public CookieSerializer cookieSerializer() {
 //        DefaultCookieSerializer serializer = new DefaultCookieSerializer();
-//        serializer.setCookieName("SESSION"); // 세션 쿠키 이름
+//        serializer.setCookieName("SESSION"); // 세션 쿠키 이름.
 //        serializer.setCookiePath("/");
-//        serializer.setUseSecureCookie(true); // HTTPS에서만 쿠키 전송 (http에서는 쿠키 전송이 안되므로 개발 환경에서는 false로 설정)
-//        serializer.setSameSite("None"); // 크로스 사이트 요청에서 쿠키 허용
+//        serializer.setUseSecureCookie(true); // HTTPS에서만 쿠키 전송 (http에서는 쿠키 전송이 안되므로 개발 환경에서는 false로 설정.)
+//        serializer.setSameSite("None"); // 크로스 사이트 요청에서 쿠키 허용.
 //        return serializer;
 //    }
 }
