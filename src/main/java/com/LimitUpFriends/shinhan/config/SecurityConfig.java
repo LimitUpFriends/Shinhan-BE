@@ -1,7 +1,7 @@
 package com.LimitUpFriends.shinhan.config;
 
 /**
- * Spring Security 설정 클래스 - 접근 권한 설정, 로그인 로그아웃 및 세션 관리, CSRF 비활성화 등
+ * Spring Security 설정 클래스 -접근 권한 설정, 로그인 로그아웃 및 세션 관리, CSRF 비활성화 등
  */
 
 import com.LimitUpFriends.shinhan.security.CustomFormLoginSuccessHandler;
