@@ -12,6 +12,7 @@ import java.util.List;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -19,11 +20,13 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
     public SecurityConfig() {}
+
 
     /**
      * 비밀번호 암호화
@@ -38,7 +41,6 @@ public class SecurityConfig {
      */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, CustomOAuth2UserService customOAuth2UserService) throws Exception {
-
         /**
          * 접근 설정
          */
@@ -52,6 +54,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/관리자만접근해야하는").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
+
 
                 .exceptionHandling(exception -> exception
                         .authenticationEntryPoint((request, response, authException) -> {
@@ -68,6 +71,7 @@ public class SecurityConfig {
                         .loginProcessingUrl("/api/v1/auth/login") // 일반 로그인 처리 경로
                         .successHandler(new CustomFormLoginSuccessHandler()) // 일반 로그인 성공 시
                         .permitAll() // 일반 로그인 페이지 접근 허용
+
                 )
 
                 .oauth2Login((oauth2) -> oauth2
@@ -83,6 +87,7 @@ public class SecurityConfig {
         // HTTP Basic 인증 설정
         http.httpBasic((basic) -> basic.disable()); // 꺼두겠습니다.
 
+
         return http.build();
     }
 
@@ -94,6 +99,7 @@ public class SecurityConfig {
         UrlBasedCorsConfigurationSource source= new UrlBasedCorsConfigurationSource();
         CorsConfiguration config= new CorsConfiguration();
 
+
         config.setAllowCredentials(true);
         config.setAllowedOriginPatterns(List.of( // 프론트엔드 도메인 허용
                 "http://localhost:3000",
@@ -104,6 +110,7 @@ public class SecurityConfig {
         config.setExposedHeaders(List.of("Authorization", "Set-Cookie", "X-API-KEY")); // 클라이언트(브라우저)에서 응답 헤더 중 해당 헤더들을 읽을 수 있도록 허용
 
         source.registerCorsConfiguration("/**", config); // 모든 경로에 대해 위의 CORS 설정 적용
+
         return source;
     }
 
