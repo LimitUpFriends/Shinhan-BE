@@ -1,4 +1,4 @@
-package com.LimitUpFriends.shinhan.controller;
+package com.LimitUpFriends.shinhan.controller.login;
 
 /**
  * 현재 인증된 계정의 정보를 불러온다.
