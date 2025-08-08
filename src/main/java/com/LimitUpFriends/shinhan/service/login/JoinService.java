@@ -1,10 +1,14 @@
 package com.LimitUpFriends.shinhan.service.login;
 
 import com.LimitUpFriends.shinhan.domain.entity.MemberEntity;
+import com.LimitUpFriends.shinhan.domain.enums.Platform;
+import com.LimitUpFriends.shinhan.domain.enums.Role;
 import com.LimitUpFriends.shinhan.dto.JoinRequestDTO;
 import com.LimitUpFriends.shinhan.repository.MemberRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
 
 @Service
 public class JoinService {
@@ -40,7 +44,11 @@ public class JoinService {
         memberEntity.setNickname(request.getNickname());
         memberEntity.setPhoneNumber(request.getPhoneNumber());
         memberEntity.setBirthdayYear(request.getBirthdayYear());
-        memberEntity.setBirthday(memberEntity.getBirthday());
+        memberEntity.setBirthday(request.getBirthday());
+        memberEntity.setPlatform(Platform.LOCAL);
+        memberEntity.setRole(Role.ROLE_USER);
+        memberEntity.setBankrupt(0);
+        memberEntity.setCreatedAt(LocalDate.now());
 
         memberRepository.save(memberEntity);
     }

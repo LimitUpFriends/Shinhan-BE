@@ -19,6 +19,8 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+
 @Service
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     //DefaultOAuth2UserService OAuth2UserService의 구현체
@@ -67,6 +69,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                                 : 0
                 );
                 memberEntity.setPlatform(Platform.NAVER);
+                memberEntity.setBankrupt(0);
+                memberEntity.setCreatedAt(LocalDate.now());
 
                 memberRepository.save(memberEntity);
                 id = memberEntity.getId();
@@ -89,6 +93,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                 memberEntity.setRole(Role.valueOf(role));
                 memberEntity.setName(name);
                 memberEntity.setPlatform(Platform.GOOGLE);
+                memberEntity.setBankrupt(0);
+                memberEntity.setCreatedAt(LocalDate.now());
 
                 memberRepository.save(memberEntity);
                 id = memberEntity.getId();
@@ -111,6 +117,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                 memberEntity.setRole(Role.valueOf(role));
                 memberEntity.setName(name);
                 memberEntity.setPlatform(Platform.KAKAO);
+                memberEntity.setBankrupt(0);
+                memberEntity.setCreatedAt(LocalDate.now());
 
                 KakaoResponse kakaoResponse = (KakaoResponse) oAuth2Response;
                 memberEntity.setBirthday(kakaoResponse.getBirthday());
@@ -128,6 +136,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         } else {
             return null;
         }
+
+
         return new CustomOAuth2User(oAuth2Response, role, id);
     }
 }
