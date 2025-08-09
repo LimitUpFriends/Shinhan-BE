@@ -1,4 +1,4 @@
-package com.LimitUpFriends.shinhan.controller;
+package com.LimitUpFriends.shinhan.controller.login;
 
 /**
  * 로그아웃 처리

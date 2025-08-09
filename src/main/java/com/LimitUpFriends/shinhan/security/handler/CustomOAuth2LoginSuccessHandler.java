@@ -1,4 +1,4 @@
-package com.LimitUpFriends.shinhan.security;
+package com.LimitUpFriends.shinhan.security.handler;
 
 /**
  * OAuth2 성공 핸들러 (리다이렉트만 수행)

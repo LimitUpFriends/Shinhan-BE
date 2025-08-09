@@ -4,9 +4,9 @@ package com.LimitUpFriends.shinhan.config;
  * Spring Security 설정 클래스 -접근 권한 설정, 로그인 로그아웃 및 세션 관리, CSRF 비활성화 등
  */
 
-import com.LimitUpFriends.shinhan.security.CustomFormLoginSuccessHandler;
-import com.LimitUpFriends.shinhan.security.CustomOAuth2LoginSuccessHandler;
-import com.LimitUpFriends.shinhan.security.CustomOAuth2UserService;
+import com.LimitUpFriends.shinhan.security.handler.CustomFormLoginSuccessHandler;
+import com.LimitUpFriends.shinhan.security.handler.CustomOAuth2LoginSuccessHandler;
+import com.LimitUpFriends.shinhan.security.auth.CustomOAuth2UserService;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
 

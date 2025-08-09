@@ -20,16 +20,20 @@ public class MemberEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    
+    // 아이디
     private String memberId;
-
+    
+    // 비밀번호
     private String password;
 
     @Enumerated(EnumType.STRING)
     private Platform platform;
 
+    // 실제이름
     private String name;
 
+    // 이메일
     private String email;
 
     private String nickname;

@@ -1,12 +1,9 @@
-package com.LimitUpFriends.shinhan.dto;
+package com.LimitUpFriends.shinhan.dto.auth;
 
-
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import java.io.Serializable;
 import java.util.Map;
 
-// @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "@class")
 public class GoogleResponse implements OAuth2Response, Serializable {
     private final Map<String, Object> attribute;
 

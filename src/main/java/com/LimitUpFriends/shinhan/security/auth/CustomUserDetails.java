@@ -1,4 +1,4 @@
-package com.LimitUpFriends.shinhan.security;
+package com.LimitUpFriends.shinhan.security.auth;
 
 /**
  * Spring Security에서 요구하는 사용자 정보의 "표준 형식"을 구현
